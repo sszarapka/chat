@@ -1,0 +1,17 @@
+@use "./styles/index" as *;
+@import "~antd/dist/antd.css";
+
+.container {
+  margin: 0 auto;
+  min-height: 100vh;
+
+  background-color: $background;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+.container.signin {
+  justify-content: center;
+  align-items: center;
+}

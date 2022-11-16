@@ -1,0 +1,77 @@
+@use "./../styles/index" as *;
+
+.chat {
+  position: relative;
+  width: 100%;
+
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    padding: calc($spacing-s * 2) $spacing-s;
+
+    width: 100%;
+    background-color: $background;
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: $app-width;
+      margin: 0 auto;
+      .title {
+        margin: 0;
+        padding: 0;
+        color: $primary;
+      }
+      .log-out {
+        color: $muted-white;
+        background-color: $grey;
+        border: none;
+      }
+    }
+  }
+  .input-container {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: $background;
+
+    .input-group {
+      display: flex;
+      margin: 0 auto;
+      max-width: $app-width;
+      bottom: 0;
+      left: 0;
+      padding: $spacing-s;
+      align-items: center;
+      .input.input {
+        background-color: $grey;
+        border-radius: 18px;
+        border: none;
+        font-size: $font-l;
+        color: $muted-white;
+      }
+      .input::placeholder {
+        color: $muted-white;
+        font-weight: 300;
+      }
+      .send-button {
+        background-color: transparent;
+        border: none;
+        color: $primary;
+        padding-right: 0;
+        .anticon-send {
+          font-size: $font-xl;
+          cursor: pointer;
+          transition: 0.3s ease;
+        }
+      }
+      .send-button:hover .anticon-send {
+        color: $light-primary;
+        transform: translateX(5px);
+      }
+    }
+  }
+}

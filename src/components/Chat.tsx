@@ -13,7 +13,7 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { Input, Button, Typography, Form } from "antd";
 
 import { SendOutlined } from "@ant-design/icons";
-
+import { v4 as uuidv4 } from "uuid";
 import Message from "./Message";
 import CurrentDate from "./CurrentDate";
 import "./Chat.scss";
@@ -48,7 +48,7 @@ const Chatv2: FC<any> = userData => {
           uid={item.uid}
           photo={item.photo}
           time={item.time}
-          key={item.time.nanoseconds.toString()}
+          key={uuidv4()}
           currentUid={userData.userData.uid}
         />
       </>

@@ -58,26 +58,31 @@ const Chatv2: FC<any> = userData => {
   const [form] = Form.useForm();
   const sendMessage = async (e: any) => {
     const message = inputRef.current.resizableTextArea.textArea.value;
-    e.preventDefault();
-    if ((e.shiftKey && e.which === 13) || message === "") {
+
+    const keyCode = e.which || e.keyCode;
+    if (!message) {
+      e.preventDefault();
       return;
     }
+    if (keyCode === 13 && !e.shiftKey) {
+      e.preventDefault();
 
-    try {
-      await addDoc(collection(getFirestore(), "messages"), {
-        name: userData.userData.name,
-        value: message,
-        uid: userData.userData.uid,
-        photo: userData.userData.photo,
-        time: serverTimestamp(),
+      try {
+        await addDoc(collection(getFirestore(), "messages"), {
+          name: userData.userData.name,
+          value: message,
+          uid: userData.userData.uid,
+          photo: userData.userData.photo,
+          time: serverTimestamp(),
+        });
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
+
+      form.setFieldsValue({
+        text: "",
       });
-    } catch (e) {
-      console.error("Error adding document: ", e);
     }
-
-    form.setFieldsValue({
-      text: "",
-    });
   };
 
   useEffect(() => {

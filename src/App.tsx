@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-import Chatv2 from "./components/Chatv2";
+import Chatv2 from "./components/Chat";
 import SignIn from "./components/SignIn";
 import { firebaseConfig } from "./firebase-config";
 

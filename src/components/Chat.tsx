@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { createRef, useEffect, FC } from "react";
 import { getAuth } from "firebase/auth";
 import {
   addDoc,
@@ -10,45 +10,63 @@ import {
 } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
-import { Input, Button, Typography } from "antd";
+import { Input, Button, Typography, Form } from "antd";
+
 import { SendOutlined } from "@ant-design/icons";
 
 import Message from "./Message";
+import CurrentDate from "./CurrentDate";
 import "./Chat.scss";
 
-const Chat = (userData: any) => {
-  const inputRef = useRef<any>(null);
-  const scrollPoint = useRef<any>(null);
+// type chatProps = {
+//   name: string;
+//   photo: string;
+//   uid: string;
+// };
 
-  const [messageContent, setMessageContent] = useState<string>("");
+const Chatv2: FC<any> = userData => {
+  const inputRef = createRef<any>();
+  const scrollPoint = createRef<any>();
 
   const messagesRef = collection(getFirestore(), "messages");
   const messagesQuery = query(messagesRef, orderBy("time"));
+
   const [messages] = useCollectionData(messagesQuery);
 
-  const messagesItems = messages?.map(item => {
+  const messagesItems = messages?.map((item, i) => {
+    const currentDate = new Date(item.time?.toDate()).toLocaleDateString();
+    const prevDate = new Date(
+      messages[i - 1]?.time.toDate()
+    ).toLocaleDateString();
+
     return (
-      <Message
-        name={item.name}
-        value={item.value}
-        uid={item.uid}
-        photo={item.photo}
-        time={item.time}
-        key={item.time}
-        currentUid={userData.userData.uid}
-      />
+      <>
+        {currentDate !== prevDate && <CurrentDate date={currentDate} />}
+        <Message
+          name={item.name}
+          value={item.value}
+          uid={item.uid}
+          photo={item.photo}
+          time={item.time}
+          key={item.time.nanoseconds.toString()}
+          currentUid={userData.userData.uid}
+        />
+      </>
     );
   });
 
+  const [form] = Form.useForm();
   const sendMessage = async (e: any) => {
     const message = inputRef.current.resizableTextArea.textArea.value;
     e.preventDefault();
-    if ((e.shiftKey && e.which === 13) || message === "") return;
+    if ((e.shiftKey && e.which === 13) || message === "") {
+      return;
+    }
 
     try {
       await addDoc(collection(getFirestore(), "messages"), {
         name: userData.userData.name,
-        value: messageContent,
+        value: message,
         uid: userData.userData.uid,
         photo: userData.userData.photo,
         time: serverTimestamp(),
@@ -56,15 +74,14 @@ const Chat = (userData: any) => {
     } catch (e) {
       console.error("Error adding document: ", e);
     }
-    setMessageContent("");
-    window.scrollBy(0, 10000);
-    scrollPoint.current.scrollIntoView({ behavior: "smooth" });
+
+    form.setFieldsValue({
+      text: "",
+    });
   };
 
   useEffect(() => {
-    window.scrollBy(0, 100);
     scrollPoint.current.scrollIntoView({ behavior: "smooth" });
-    window.scroll();
   }, [scrollPoint]);
 
   return (
@@ -88,23 +105,30 @@ const Chat = (userData: any) => {
       <span ref={scrollPoint}></span>
 
       <div className="input-container">
-        <Input.Group className="input-group">
-          <Input.TextArea
-            className="input"
-            placeholder="Napisz wiadomość"
-            onPressEnter={sendMessage}
-            ref={inputRef}
-            value={messageContent}
-            onChange={e => setMessageContent(e.target.value)}
-            autoSize={{ minRows: 1, maxRows: 6 }}
-          />
-          <Button type="primary" className="send-button" onClick={sendMessage}>
-            <SendOutlined />
-          </Button>
-        </Input.Group>
+        <Form className="input-group" form={form} onFinish={sendMessage}>
+          <Form.Item name="text" className="input-item">
+            <Input.TextArea
+              className="input"
+              placeholder="Napisz wiadomość"
+              onPressEnter={sendMessage}
+              ref={inputRef}
+              autoSize={{ minRows: 1, maxRows: 6 }}
+            />
+          </Form.Item>
+
+          <Form.Item>
+            <Button
+              type="primary"
+              className="send-button"
+              onClick={sendMessage}
+            >
+              <SendOutlined />
+            </Button>
+          </Form.Item>
+        </Form>
       </div>
     </main>
   );
 };
 
-export default Chat;
+export default Chatv2;

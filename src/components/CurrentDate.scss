@@ -1,0 +1,8 @@
+@use "./../styles/index" as *;
+
+.current-date {
+  color: $muted-white;
+  width: 100%;
+  text-align: center;
+  font-weight: 500;
+}

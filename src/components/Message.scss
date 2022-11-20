@@ -1,0 +1,30 @@
+@use "./../styles/index" as *;
+
+.messages-container {
+  margin: calc($spacing-s * 8) auto calc($spacing-s * 5);
+  padding: 0 $spacing-s;
+  max-width: $app-width;
+
+  .message {
+    .ant-comment-content-author-name {
+      color: $muted-white;
+      font-size: $font-m;
+      font-weight: 600;
+    }
+    .ant-comment-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .message-content {
+      padding: $spacing-s $spacing-m;
+      background-color: $grey;
+      border-radius: 8px 18px 18px 18px;
+      color: $muted-white;
+    }
+    .message-content.active {
+      background-color: $primary;
+      color: #fff;
+    }
+  }
+}

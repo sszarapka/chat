@@ -64,7 +64,8 @@ const Chatv2: FC<any> = userData => {
       e.preventDefault();
       return;
     }
-    if (keyCode === 13 && !e.shiftKey) {
+
+    if ((keyCode === 13 && !e.shiftKey) || e.target.closest(".send-button")) {
       e.preventDefault();
 
       try {
@@ -118,6 +119,7 @@ const Chatv2: FC<any> = userData => {
               onPressEnter={sendMessage}
               ref={inputRef}
               autoSize={{ minRows: 1, maxRows: 6 }}
+              maxLength={300}
             />
           </Form.Item>
 

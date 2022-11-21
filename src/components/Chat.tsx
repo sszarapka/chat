@@ -57,11 +57,14 @@ const Chatv2: FC<any> = userData => {
 
   const [form] = Form.useForm();
   const sendMessage = async (e: any) => {
-    const message = inputRef.current.resizableTextArea.textArea.value;
+    const message = inputRef.current.resizableTextArea.textArea.value.trim();
 
     const keyCode = e.which || e.keyCode;
     if (!message) {
       e.preventDefault();
+      form.setFieldsValue({
+        text: "",
+      });
       return;
     }
 

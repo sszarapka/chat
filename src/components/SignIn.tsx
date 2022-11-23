@@ -1,9 +1,9 @@
-import React from "react";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { GoogleOutlined } from "@ant-design/icons";
-import { Button } from "antd";
+import React, { FC } from 'react';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 
-const SignIn = () => {
+const SignIn: FC = () => {
   const provider = new GoogleAuthProvider();
   return (
     <Button

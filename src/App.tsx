@@ -1,13 +1,13 @@
-import React from "react";
-import { getAuth } from "firebase/auth";
-import { initializeApp } from "firebase/app";
-import { useAuthState } from "react-firebase-hooks/auth";
+import React from 'react';
+import { getAuth } from 'firebase/auth';
+import { initializeApp } from 'firebase/app';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
-import Chatv2 from "./components/Chat";
-import SignIn from "./components/SignIn";
-import { firebaseConfig } from "./firebase-config";
+import Chat from './components/Chat';
+import SignIn from './components/SignIn';
+import { firebaseConfig } from './firebase-config';
 
-import "./App.scss";
+import './App.scss';
 
 function App() {
   initializeApp(firebaseConfig);
@@ -21,8 +21,16 @@ function App() {
   };
 
   return (
-    <main className={user ? "container" : "container signin"}>
-      {user ? <Chatv2 userData={userData} /> : <SignIn />}
+    <main className={user ? 'container' : 'container signin'}>
+      {user ? (
+        <Chat
+          name={userData.name as string}
+          photo={userData.photo as string}
+          uid={userData.uid as string}
+        />
+      ) : (
+        <SignIn />
+      )}
     </main>
   );
 }

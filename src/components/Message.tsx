@@ -1,23 +1,33 @@
-import React, { FC } from "react";
-import { Avatar, Comment } from "antd";
-import "./Message.scss";
+import React, { FC } from 'react';
+import { Avatar, Comment } from 'antd';
+import './Message.scss';
 
-// type MessageType = {
-//   name: string;
-//   value: string;
-//   uid: string;
-//   photo: string;
-//   time: {
-//     seconds: number;
-//     nanosecods: number;
-//   };
-//   currentUid: string;
-// };
+type Time = {
+  toDate(): Date;
+  seconds: number;
+  nanosecods: number;
+};
 
-const Message: FC<any> = ({ name, value, uid, photo, time, currentUid }) => {
+type MessageType = {
+  name: string;
+  value: string;
+  uid: string;
+  photo: string;
+  time: Time;
+  currentUid: string;
+};
+
+const Message: FC<MessageType> = ({
+  name,
+  value,
+  uid,
+  photo,
+  time,
+  currentUid,
+}) => {
   const messageTime = new Date(time?.toDate()).toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
+    hour: '2-digit',
+    minute: '2-digit',
   });
   return (
     <Comment
@@ -27,7 +37,7 @@ const Message: FC<any> = ({ name, value, uid, photo, time, currentUid }) => {
       content={
         <p
           className={
-            currentUid === uid ? "message-content active" : "message-content"
+            currentUid === uid ? 'message-content active' : 'message-content'
           }
         >
           {value}

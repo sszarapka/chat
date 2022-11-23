@@ -1,5 +1,5 @@
-import React, { createRef, useEffect, FC } from "react";
-import { getAuth } from "firebase/auth";
+import React, { createRef, useEffect, FC } from 'react';
+import { getAuth } from 'firebase/auth';
 import {
   addDoc,
   collection,
@@ -7,29 +7,29 @@ import {
   getFirestore,
   orderBy,
   query,
-} from "firebase/firestore";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+} from 'firebase/firestore';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
-import { Input, Button, Typography, Form } from "antd";
+import { Input, Button, Typography, Form } from 'antd';
 
-import { SendOutlined } from "@ant-design/icons";
-import { v4 as uuidv4 } from "uuid";
-import Message from "./Message";
-import CurrentDate from "./CurrentDate";
-import "./Chat.scss";
+import { SendOutlined } from '@ant-design/icons';
+import { v4 as uuidv4 } from 'uuid';
+import Message from './Message';
+import CurrentDate from './CurrentDate';
+import './Chat.scss';
 
-// type chatProps = {
-//   name: string;
-//   photo: string;
-//   uid: string;
-// };
+type chatProps = {
+  name: string;
+  photo: string;
+  uid: string;
+};
 
-const Chatv2: FC<any> = userData => {
+const Chatv2: FC<chatProps> = ({ name, photo, uid }) => {
   const inputRef = createRef<any>();
   const scrollPoint = createRef<any>();
 
-  const messagesRef = collection(getFirestore(), "messages");
-  const messagesQuery = query(messagesRef, orderBy("time"));
+  const messagesRef = collection(getFirestore(), 'messages');
+  const messagesQuery = query(messagesRef, orderBy('time'));
 
   const [messages] = useCollectionData(messagesQuery);
 
@@ -49,7 +49,7 @@ const Chatv2: FC<any> = userData => {
           photo={item.photo}
           time={item.time}
           key={uuidv4()}
-          currentUid={userData.userData.uid}
+          currentUid={uid}
         />
       </>
     );
@@ -63,34 +63,34 @@ const Chatv2: FC<any> = userData => {
     if (!message) {
       e.preventDefault();
       form.setFieldsValue({
-        text: "",
+        text: '',
       });
       return;
     }
 
-    if ((keyCode === 13 && !e.shiftKey) || e.target.closest(".send-button")) {
+    if ((keyCode === 13 && !e.shiftKey) || e.target.closest('.send-button')) {
       e.preventDefault();
 
       try {
-        await addDoc(collection(getFirestore(), "messages"), {
-          name: userData.userData.name,
+        await addDoc(collection(getFirestore(), 'messages'), {
+          name: name,
           value: message,
-          uid: userData.userData.uid,
-          photo: userData.userData.photo,
+          uid: uid,
+          photo: photo,
           time: serverTimestamp(),
         });
       } catch (e) {
-        console.error("Error adding document: ", e);
+        console.error('Error adding document: ', e);
       }
 
       form.setFieldsValue({
-        text: "",
+        text: '',
       });
     }
   };
 
   useEffect(() => {
-    scrollPoint.current.scrollIntoView({ behavior: "smooth" });
+    scrollPoint.current.scrollIntoView({ behavior: 'smooth' });
   }, [scrollPoint]);
 
   return (

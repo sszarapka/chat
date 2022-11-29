@@ -11,6 +11,7 @@
 ## Used technologies
 
 - TypeScript
+- React
 - Firebase
 - SCSS
 
